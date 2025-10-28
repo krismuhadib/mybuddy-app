@@ -86,9 +86,10 @@ const LoveSpeciesScreen = ( route ) => {
   };
 
   const goSetting = () => {
-    navigation.navigate("LoveSwapSetting", {
-      params: typeOf,
-    })
+    navigation.goBack();
+    // navigation.navigate("LoveSwapSetting", {
+    //   params: typeOf,
+    // })
   };
 
   const EditAnimal = async (item) => {

@@ -5,7 +5,7 @@ module.exports = {
   urichat: 'http://192.168.1.17:3001/',
   // serveur OVH (la Bonne)
   //uri : 'https://api.mybuddydiary.com/',
-  //urichat : 'http://54.36.183.109:3001/',
+  //urichat : 'http://XXXX:XXXX/',
 
   // Link Server for User,
   // LOCAL
@@ -308,7 +308,7 @@ module.exports = {
   },
   // Love
   loveSwap: {
-    maxSearchDistance: 40000,
+    maxSearchDistance: 1000,
   },
 
   MenuTxtSize: function (ScreenWidth: number) {

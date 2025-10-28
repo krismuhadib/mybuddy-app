@@ -52,6 +52,9 @@ const LoveSwapSettingScreen = (route) => {
   const [loveTypeOfName, setLoveTypeOfName] = useState(animalData ? animalData.lovetypeofname : animalData.lovetypeofname);
   const [loveBreedName, setLoveBreedName] = useState(animalData ? animalData.lovebreedname : animalData.lovebreedname);
 
+  const [sliderMax, setSliderMax] = useState("");
+
+
   const params = route.route.params;
 
   console.log("LoveSwapSetting");
@@ -85,9 +88,23 @@ const LoveSwapSettingScreen = (route) => {
   useEffect(() => {
     setLoveTypeOfName(animalData.lovetypeofname);
     setLoveBreedName(animalData.lovebreedname);
-    // editAnimal();
-  }, [params]);
+  }, [animalData]);
 
+    useEffect(() => {
+      if (sliderValueDistance > 700) {
+        setSliderMax("Everywhere");
+      } else {
+        setSliderMax(sliderValueDistance + "Km");
+      }
+   
+  }, [sliderValueDistance]);
+
+    useEffect(() => {
+      if (allSpecies === true) {
+        setAllBreeds(true)
+      }
+    
+  }, [animalData]);
 
 
   useEffect(() => {
@@ -98,7 +115,6 @@ const LoveSwapSettingScreen = (route) => {
       setLoveBreed(animalData.breed);
       setLoveBreedName(animalData.lovebreedname);
     }
-    // editAnimal();
   }, [loveGenre, params]);
 
 
@@ -107,18 +123,25 @@ const LoveSwapSettingScreen = (route) => {
   };
 
   const goLoveSwapPage = () => {
-    navigation.navigate("LoveSwap", {
-      params: allSpecies,
-    })
+    // navigation.popToTop();
+    //  navigation.replace("LoveSwap", {
+    //   params: allSpecies,
+    // });
+
+    navigation.goBack();
   };
 
 
   const editAnimal = async () => {
+    var searchDistance = sliderValueDistance;
+    if (sliderValueDistance > 900) {
+      searchDistance = 50000
+    }
     const animalProps = {
       id: animalData._id,
       user_id: userData._id,
       lovegenre: loveGenre,
-      swapdistance: sliderValueDistance,
+      swapdistance: searchDistance,
       loveTypeOfName: loveTypeOfName,
       loveTypeOf: loveTypeOf,
       loveBreedName: loveBreedName,
@@ -165,7 +188,7 @@ const LoveSwapSettingScreen = (route) => {
         iconNameL="angle-left"
         //iconNameR="notifications-outline"
         iconFamilyL="FontAwesome"
-       // iconFamilyR="Ionicons"
+        // iconFamilyR="Ionicons"
         navigationName="LoveSwap"
         navigationNameR="NotificationListScreen"
         logo={false}
@@ -186,7 +209,7 @@ const LoveSwapSettingScreen = (route) => {
             />
           </View>
 
-         
+
 
           {(!allSpecies) &&
 
@@ -212,36 +235,36 @@ const LoveSwapSettingScreen = (route) => {
 
               {(userData.ispremium === true && loveTypeOfName !== undefined) &&
 
-              
+
                 <View>
-                   <View style={{ paddingTop: 10 }}>
-            <SwitchComponent
-              label={i18n.t('loveSwap.allBreedsSearch')}
-              onValueChange={setAllBreeds}
-              value={allBreeds}
-            />
-          </View>
+                  <View style={{ paddingTop: 10 }}>
+                    <SwitchComponent
+                      label={i18n.t('loveSwap.allBreedsSearch')}
+                      onValueChange={setAllBreeds}
+                      value={allBreeds}
+                    />
+                  </View>
 
 
                   {(allBreeds === false && loveTypeOfName !== undefined) &&
-                   <View>
-                  <Text style={BDiaryStyles.h5}>{i18n.t('loveSwap.chooseBreeds')} :</Text>
-                  <TouchableOpacity style={{ padding: 10 }}
-                    onPress={() => navigation.navigate('LoveBreeds', {
-                      from: "LoveSwap",
-                      typeof: animalData.lovetypeof,
-                    })}>
-                    {/* Breeds  */}
-                    <View style={{ alignContent: "center", alignItems: "center", justifyContent: "center", flexDirection: "row", borderWidth: 1, borderRadius: 25, borderColor: Colors.greyL, height: 40, }}>
-                      <Text style={[BDiaryStyles.h5, { textTransform: "capitalize", paddingLeft: 15, color: Colors.greyM }]}>
-                        {loveBreedName}
-                      </Text>
-                      <View style={[styles.itemContainericon, { flex: 1, borderWidth: 0, alignItems: 'flex-end', }]}>
-                        <Ionicons style={{ padding: 10 }} name="search" size={18} color={Colors.greyL} />
-                      </View>
+                    <View>
+                      <Text style={BDiaryStyles.h5}>{i18n.t('loveSwap.chooseBreeds')} :</Text>
+                      <TouchableOpacity style={{ padding: 10 }}
+                        onPress={() => navigation.navigate('LoveBreeds', {
+                          from: "LoveSwap",
+                          typeof: animalData.lovetypeof,
+                        })}>
+                        {/* Breeds  */}
+                        <View style={{ alignContent: "center", alignItems: "center", justifyContent: "center", flexDirection: "row", borderWidth: 1, borderRadius: 25, borderColor: Colors.greyL, height: 40, }}>
+                          <Text style={[BDiaryStyles.h5, { textTransform: "capitalize", paddingLeft: 15, color: Colors.greyM }]}>
+                            {loveBreedName}
+                          </Text>
+                          <View style={[styles.itemContainericon, { flex: 1, borderWidth: 0, alignItems: 'flex-end', }]}>
+                            <Ionicons style={{ padding: 10 }} name="search" size={18} color={Colors.greyL} />
+                          </View>
+                        </View>
+                      </TouchableOpacity>
                     </View>
-                  </TouchableOpacity>
-                   </View>
                   }
                 </View>
               }
@@ -288,9 +311,10 @@ const LoveSwapSettingScreen = (route) => {
                 <Text style={[BDiaryStyles.h5, { color: Colors.greyH }]}>{i18n.t('loveSwap.searchSwapDistance')} :
                 </Text>
                 {(sliderValueDistance !== undefined || sliderValueDistance !== null) &&
-                  <Text style={[BDiaryStyles.h5, { fontFamily: 'Poppins-Bold', }]}> {sliderValueDistance} km</Text>
+                  <Text style={[BDiaryStyles.h5, { fontFamily: 'Poppins-Bold', }]}>{sliderMax}</Text>
                 }
               </View>
+              
               <View style={{ marginTop: 10, marginLeft: 20, marginRight: 20 }}>
                 <LoveSliderComponent
                   maxValue={config.loveSwap.maxSearchDistance}

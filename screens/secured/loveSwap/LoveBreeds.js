@@ -87,9 +87,11 @@ const LoveBreedsScreen = ( route ) => {
   };
 
   const goSetting = () => {
-    navigation.navigate("LoveSwapSetting", {
-      params: typeOf,
-    })
+    navigation.goBack();
+    //   navigation.popToTop();
+    // navigation.navigate("LoveSwapSetting", {
+    //   params: typeOf,
+    // })
   };
 
   const EditAnimal = async (item) => {

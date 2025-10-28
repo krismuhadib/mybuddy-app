@@ -79,7 +79,7 @@ const LoveSwapScreen = (route) => {
 
   useEffect(() => {
     getLoveList();
-  }, [params,swapDistance]);
+  }, [params,swapDistance,animalData]);
 
   const reloadLoveList = () => {
     setIsFetching(true);
@@ -124,6 +124,7 @@ const LoveSwapScreen = (route) => {
         nolovers: animalData.nolovers,
         skipnumber: skipNumber,
         loveallspecies: animalData.loveallspecies,
+        loveallbreeds: animalData.loveallbreeds,
         genre: animalData.lovegenre
       })
     })

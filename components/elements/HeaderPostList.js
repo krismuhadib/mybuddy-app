@@ -16,7 +16,7 @@ const HeaderPostList = ({ updatePostLike, getAllPost, openWarningModal, openPost
   const userData = useSelector((state) => state.user.value ? state.user.value : null);
   const animalData = useSelector((state) => state.animal.value ? state.animal.value : null);
 
-console.log("HeaderPostList", item)
+//console.log("HeaderPostList", item)
 
 
   return (
