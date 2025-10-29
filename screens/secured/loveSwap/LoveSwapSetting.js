@@ -41,20 +41,14 @@ const LoveSwapSettingScreen = (route) => {
   const [sliderValueDistance, setSliderValueDistance] = useState(animalData.swapdistance);
   const [allSpecies, setAllSpecies] = useState(animalData ? animalData.loveallspecies : animalData.loveallspecies);
   const [allBreeds, setAllBreeds] = useState(animalData ? animalData.loveallbreeds : animalData.loveallbreeds);
-
   const [loveAdoption, setLoveAdoption] = useState(animalData ? animalData.loveadoption : animalData.loveadoption);
   const [loveReproduction, setLoveReproduction] = useState(animalData ? animalData.lovereproduction : animalData.lovereproduction);
-
   const [loveGenre, setLoveGenre] = useState(animalData ? animalData.lovegenre : animalData.lovegenre);
   const [loveTypeOf, setLoveTypeOf] = useState(animalData ? animalData.lovetypeof : animalData.lovetypeof);
   const [loveBreed, setLoveBreed] = useState(animalData ? animalData.lovetypeof : animalData.loveBreed);
-
   const [loveTypeOfName, setLoveTypeOfName] = useState(animalData ? animalData.lovetypeofname : animalData.lovetypeofname);
   const [loveBreedName, setLoveBreedName] = useState(animalData ? animalData.lovebreedname : animalData.lovebreedname);
-
   const [sliderMax, setSliderMax] = useState("");
-
-
   const params = route.route.params;
 
   console.log("LoveSwapSetting");
@@ -90,25 +84,22 @@ const LoveSwapSettingScreen = (route) => {
     setLoveBreedName(animalData.lovebreedname);
   }, [animalData]);
 
-    useEffect(() => {
-      if (sliderValueDistance > 700) {
-        setSliderMax("Everywhere");
-      } else {
-        setSliderMax(sliderValueDistance + "Km");
-      }
-   
+  useEffect(() => {
+    if (sliderValueDistance > 700) {
+      setSliderMax("Everywhere");
+    } else {
+      setSliderMax(sliderValueDistance + "Km");
+    }
   }, [sliderValueDistance]);
 
-    useEffect(() => {
-      if (allSpecies === true) {
-        setAllBreeds(true)
-      }
-    
+  useEffect(() => {
+    if (allSpecies === true) {
+      setAllBreeds(true)
+    }
   }, [animalData]);
 
 
   useEffect(() => {
-    // console.log("animal data love sawap setting", animalData)
     if (animalData.lovetypeof === undefined || animalData.lovebreed === undefined) {
       setLoveTypeOf(animalData.typeof);
       setLoveTypeOfName(animalData.lovetypeofname);
@@ -130,7 +121,6 @@ const LoveSwapSettingScreen = (route) => {
 
     navigation.goBack();
   };
-
 
   const editAnimal = async () => {
     var searchDistance = sliderValueDistance;
@@ -209,8 +199,6 @@ const LoveSwapSettingScreen = (route) => {
             />
           </View>
 
-
-
           {(!allSpecies) &&
 
             <View>
@@ -235,7 +223,6 @@ const LoveSwapSettingScreen = (route) => {
 
               {(userData.ispremium === true && loveTypeOfName !== undefined) &&
 
-
                 <View>
                   <View style={{ paddingTop: 10 }}>
                     <SwitchComponent
@@ -244,7 +231,6 @@ const LoveSwapSettingScreen = (route) => {
                       value={allBreeds}
                     />
                   </View>
-
 
                   {(allBreeds === false && loveTypeOfName !== undefined) &&
                     <View>
@@ -266,6 +252,7 @@ const LoveSwapSettingScreen = (route) => {
                       </TouchableOpacity>
                     </View>
                   }
+
                 </View>
               }
 
@@ -314,7 +301,7 @@ const LoveSwapSettingScreen = (route) => {
                   <Text style={[BDiaryStyles.h5, { fontFamily: 'Poppins-Bold', }]}>{sliderMax}</Text>
                 }
               </View>
-              
+
               <View style={{ marginTop: 10, marginLeft: 20, marginRight: 20 }}>
                 <LoveSliderComponent
                   maxValue={config.loveSwap.maxSearchDistance}

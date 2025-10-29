@@ -324,7 +324,8 @@ const LoveMatchScreen = (route) => {
             <Text style={{ fontSize: 15, textAlign: 'center', fontStyle: "italic", color: Colors.greyL }}>{i18n.t('Error.No_Matches')}</Text>
           </View>
         }
-        <View style={{flex:1, backgroundColor:Colors.white}}>
+        <View style={{borderWidth:0}}>
+          
           <FlatList
           // inverted={true}
           ItemSeparatorComponent={ListSeparator}

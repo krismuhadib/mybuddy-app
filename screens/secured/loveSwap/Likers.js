@@ -41,12 +41,12 @@ const LikersScreen = ({ route }) => {
     const [notifLike, setNotifLike] = useState("");
     const [notifTitle, setNotifTitle] = useState("");
     const [active, setActive] = useState(false);
-    
+
 
 
     console.log("LikerList");
 
- 
+
     //     useEffect(() => {
     //       setTimeout(() => {
     //         displayLoveMatchAnimation();
@@ -65,12 +65,12 @@ const LikersScreen = ({ route }) => {
     };
 
     const displayLoveMatchAnimation = () => {
-     setActive(true);
-     setTimeout(() => {
-       setActive(false);
-       setMatchVisible(false);
-     }, 10000);
-  };
+        setActive(true);
+        setTimeout(() => {
+            setActive(false);
+            setMatchVisible(false);
+        }, 10000);
+    };
 
 
     const getAllLikers = async () => {
@@ -217,27 +217,27 @@ const LikersScreen = ({ route }) => {
     };
 
     const addtoLovers = async (item, index) => {
-         if (item) {
-         
-      try {
-       
-        // Send AddLoversId to array in db
-        const response = await fetch(config.uri + 'animals/addlovelikers', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                //'x-access-token' : this.state.userToken,
-            },
-            body: JSON.stringify({
-                animal_id: animalData._id,
-                liker_id: item._id,
-            })
-        })
+        if (item) {
 
-         const res = await response.json();
+            try {
 
-          
+                // Send AddLoversId to array in db
+                const response = await fetch(config.uri + 'animals/addlovelikers', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        //'x-access-token' : this.state.userToken,
+                    },
+                    body: JSON.stringify({
+                        animal_id: animalData._id,
+                        liker_id: item._id,
+                    })
+                })
+
+                const res = await response.json();
+
+
                 if (res.success === true) {
                     setNotifLike(res.notifinfo.like);
                     setNotifTitle(res.notifinfo.title);
@@ -247,25 +247,35 @@ const LikersScreen = ({ route }) => {
                 else {
                     console.log(i18n.t('Fetch_Error.prbRes'))
                 }
-           
 
-        getAllLikers();
-        setTimeout(() => {
-            setMatchVisible(false);
-        }, 2000);
 
-        setTimeout(() => {
-            navigation.navigate('LoveMatch', {
-                reload: true,
-            })
-        }, 2000)
-         } catch (error) {
-        console.error('Error liking post:', error);
-      
-    }
-         } else {
-      console.log("PRB ITEM");
-    }
+                getAllLikers();
+                setTimeout(() => {
+                    setMatchVisible(false);
+                }, 2000);
+
+                setTimeout(() => {
+                    navigation.navigate('LoveMatch', {
+                        reload: true,
+                    })
+                }, 2000)
+            } catch (error) {
+                console.error('Error liking post:', error);
+
+            }
+        } else {
+            console.log("PRB ITEM");
+        }
+    };
+
+    // Fonction utilitaire pour grouper les items 2 par 2
+    const groupData = (data = []) => {
+        if (!Array.isArray(data)) return []; // ✅ sécurité si data n’est pas un tableau
+        const grouped = [];
+        for (let i = 0; i < data.length; i += 2) {
+            grouped.push(data.slice(i, i + 2));
+        }
+        return grouped;
     };
 
 
@@ -294,10 +304,10 @@ const LikersScreen = ({ route }) => {
                             source={noImg}>
                         </Image>
                     }
-                    <Text style={{ position: "absolute", paddingLeft: 10, textTransform: "capitalize", fontWeight:"bold", color: Colors.white, top: 10, fontSize: 18, justifyContent: "flex-start", alignSelf: "flex-start", alignContent: "flex-start" }}>{item.name}</Text>
+                    <Text style={{ position: "absolute", paddingLeft: 10, textTransform: "capitalize", fontWeight: "bold", color: Colors.white, top: 10, fontSize: 18, justifyContent: "flex-start", alignSelf: "flex-start", alignContent: "flex-start" }}>{item.name}</Text>
 
                     {(item.birthday) &&
-                        <Text style={{ position: "absolute", paddingLeft:10, color: Colors.white, top: 30, fontSize: 15, justifyContent: "flex-start", alignSelf: "flex-start", alignContent: "flex-start" }}>{calculateAge(item.birthday)} {i18n.t('Page.Years')}</Text>
+                        <Text style={{ position: "absolute", paddingLeft: 10, color: Colors.white, top: 30, fontSize: 15, justifyContent: "flex-start", alignSelf: "flex-start", alignContent: "flex-start" }}>{calculateAge(item.birthday)} {i18n.t('Page.Years')}</Text>
                     }
 
                 </TouchableOpacity>
@@ -451,9 +461,9 @@ const LikersScreen = ({ route }) => {
 
             <View style={{ width: ScreenWidth }}>
                 <SearchInput
-                placeholder={i18n.t('species.search')}
-                functionProp={handleSearchChange}
-                list={likerList}
+                    placeholder={i18n.t('species.search')}
+                    functionProp={handleSearchChange}
+                    list={likerList}
                 />
             </View>
             {(likerList.length == 0) &&
@@ -465,38 +475,52 @@ const LikersScreen = ({ route }) => {
             {(likerList) &&
                 <>
                     <View style={{ flex: 1 }}>
-                        <FlatList
-                            showsVerticalScrollIndicator={false}
-                            onRefresh={() => reloadList()}
-                            refreshing={isFetching}
-                            keyExtractor={(item, i) => item._id}
-                            // extraData={this.state}
-                            data={filteredData}
-                            //ItemSeparatorComponent={ListSeparator}
-                            renderItem={renderItem}
-                        />
+                        {Array.isArray(filteredData) && filteredData.length > 0 && (
+                            <FlatList
+                                data={groupData(filteredData)}
+                                keyExtractor={(_, index) => index.toString()}
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                renderItem={({ item }) => (
+                                    <View style={{ flexDirection: "column" }}>
+                                        {item.map((user, i) => renderItem({ item: user, index: i }))}
+                                    </View>
+                                )}
+                            />
+                        )}
                     </View>
 
                 </>
             }
 
 
-            {(!matchVisible) &&
-                  <View style={{  position:"absolute", zIndex:100, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            {(matchVisible) &&
+                <View style={{ position: "absolute", zIndex: 100, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <HeartConfettiTwoColors
-                    active={active}
-                    fadeDuration={500}  // durée du fondu in/out
-                    speed="fast"         // "slow" | "normal" | "fast"
-                    count={30}           // nombre de cœurs à l’écran
+                        active={active}
+                        fadeDuration={500}  // durée du fondu in/out
+                        speed="fast"         // "slow" | "normal" | "fast"
+                        count={30}           // nombre de cœurs à l’écran
                     />
-             </View>
-             }
-                   
+                </View>
+            }
+
             {(matchVisible === true) &&
-                <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', height: ScreenHeight, width: ScreenWidth, position: "absolute" }}>
-                    <Image
+                <View style={{ backgroundColor: 'rgba(0,0,0,0)', height: ScreenHeight, width: ScreenWidth }}>
+
+                    <View style={{ alignContent: "center", justifyContent: "center", alignItems: "center" }}>
+
+                        <Image
+                            style={{ marginBottom: ScreenHeight - ScreenHeight / 2.5, padding: 0, borderRadius: 8, resizeMode: "contain", width: ScreenWidth, height: "100%" }}
+                            source={{ uri: config.linkserver + animalData._id + '/images/avatar/large/' + animalData._id + '.jpg' }}
+                        />
+
+                    </View>
+                    {/* <Image
                         style={[styles.matchImage, { zIndex: 1, position: "absolute" }]}
-                        source={matchImage} />
+                        source={matchImage} /> */}
+
+
                 </View>
             }
 

@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated, Dimensions, View, Easing, Text } from 'react-native';
+import { Platform, Animated, Dimensions, View, Easing, Text } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
 // Couleur aléatoire (rouge ou blanc)
-const randomColor = () => (Math.random() < 0.5 ? 'red' : 'green');
+const randomColor = () => (Math.random() < 0.5 ? 'red' : 'pink');
 
 // Mappe la vitesse vers une durée de chute
 const getDurationRange = (speed) => {
@@ -12,7 +12,7 @@ const getDurationRange = (speed) => {
     case 'slow':
       return [4000, 6000];
     case 'fast':
-      return [1500, 3000];
+      return [300, 4000];
     default:
       return [2500, 4500]; // "normal"
   }
@@ -86,9 +86,16 @@ const Heart = ({ x, delay, active, shouldStop, globalOpacity, speed }) => {
     >
       <Text
         style={{
-          fontSize: 24 + Math.random() * 10,
+          fontSize:
+            Platform.OS === 'android'
+              ? 30 + Math.random() * 25 // Android → taille variable
+              : 60 + Math.random() * 25, // iOS → taille fixe
           color: randomColor(),
         }}
+      // style={{
+      //   fontSize: 30 + Math.random() * 25,
+      //   color: randomColor(),
+      // }}
       >
         ♥
       </Text>
@@ -99,7 +106,7 @@ const Heart = ({ x, delay, active, shouldStop, globalOpacity, speed }) => {
 export default function HeartConfettiCustomizable({
   active = true,
   fadeDuration = 1000,
-  speed = 'normal', // "slow" | "normal" | "fast"
+  speed = 'fast', // "slow" | "normal" | "fast"
   count = 35,
 }) {
   const globalOpacity = useRef(new Animated.Value(active ? 1 : 0)).current;

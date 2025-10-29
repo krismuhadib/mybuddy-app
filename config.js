@@ -5,7 +5,7 @@ module.exports = {
   urichat: 'http://192.168.1.17:3001/',
   // serveur OVH (la Bonne)
   //uri : 'https://api.mybuddydiary.com/',
-  //urichat : 'http://XXXX:XXXX/',
+  //urichat : 'http://54.36.183.109:3001/',
 
   // Link Server for User,
   // LOCAL

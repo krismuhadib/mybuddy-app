@@ -243,12 +243,12 @@ const LoveSwapScreen = (route) => {
       </View>
 
       {(matchVisible === true) &&
-      <View style={{  position:"absolute", zIndex:100, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{  position:"absolute", zIndex:900, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <HeartConfettiTwoColors
         active={active}
         fadeDuration={1500}  // durée du fondu in/out
-        speed="normal"         // "slow" | "normal" | "fast"
-        count={30}           // nombre de cœurs à l’écran
+        speed="fast"         // "slow" | "normal" | "fast"
+        count={50}           // nombre de cœurs à l’écran
         />
 
         {/* <EmojiConfetti
@@ -272,15 +272,19 @@ const LoveSwapScreen = (route) => {
       }
  
 {(matchVisible === true) &&
-            <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.0)', height: ScreenHeight -30, width: ScreenWidth , position: "absolute" }}>
-              <Image
-                style={[styles.matchImage, {  position: "absolute", zIndex: 999 }]}
-                source={matchImage} />
-
+            <View style={{ zIndex:100, flex: 1, backgroundColor: 'rgba(0,0,0,0.0)', height: ScreenHeight, width: ScreenWidth , position: "absolute" }}>
+              <View style={{backgroundColor:Colors.black}}>
                  <Image
-                style={{Zindex:900, padding:0, borderRadius:0, resizeMode: "contain", width: "100%", height: ScreenHeight -30}}
+                style={{ padding:0, borderRadius:0, resizeMode: "contain", width: "100%", height: ScreenHeight -30}}
                 source={{ uri: config.linkserver + idMatch + '/images/avatar/large/' + idMatch + '.jpg' }}
                  />
+                 {/* idMatch */}
+                 </View>
+              {/* <Image
+                style={[styles.matchImage, {  position: "absolute", zIndex: 999 }]}
+                source={matchImage} /> */}
+
+                
                  
             </View>
           }

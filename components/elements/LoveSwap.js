@@ -36,7 +36,7 @@ const LoveSwap = ({ setIdMatch, idMatch, setActive, active, setMatchVisible, mat
     const [history, setHistory] = useState([]); // Historique des cartes
     const [likers, setLikers] = useState([]);
     const [count, setCount] = useState(0);
-  
+
 
     console.log("LoveSwap component");
 
@@ -46,15 +46,15 @@ const LoveSwap = ({ setIdMatch, idMatch, setActive, active, setMatchVisible, mat
         cardIndexRef.current = cardIndex;
     }, [cardIndex]);
 
-//         useEffect(() => {
-//              console.log("useeffect")
-//  undoSwipe();
-           
-//             setActive(true);
+    //         useEffect(() => {
+    //              console.log("useeffect")
+    //  undoSwipe();
 
-            
-     
-//   }, [matchVisible]);
+    //             setActive(true);
+
+
+
+    //   }, [matchVisible]);
 
 
     if (!Array.isArray(cards)) cards = [];
@@ -84,38 +84,38 @@ const LoveSwap = ({ setIdMatch, idMatch, setActive, active, setMatchVisible, mat
     });
 
     const sendPushMatchNotification = async (item,) => {
-       
-        console.log("sendPushMatchNotification itsm",item)
-    var isavatar = animalData.avatars.length;
 
-    try {
-        const response = await fetch(config.uri + 'notifications/sendlikenotifications', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            to: item,
-            title: "Notification Like",
-            name: animalData.name,
-            notif_message: true,
-            sender_id: animalData._id,
-            sender_avatar: isavatar,
-            language: i18n._locale,
-            //originname: item.animal_id.name,
-            postanimalid: item,
-        }),
-        });
-        const res = await response.json();
-        if (res.success) {
-        console.log("Notification envoyée avec succès !");
-        } else {
-        console.log("Erreur lors de l'envoi de la notification :", res);
+        console.log("sendPushMatchNotification itsm", item)
+        var isavatar = animalData.avatars.length;
+
+        try {
+            const response = await fetch(config.uri + 'notifications/sendmatchnotifications', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    to: item,
+                    title: "Notification Like",
+                    name: animalData.name,
+                    notif_message: true,
+                    sender_id: animalData._id,
+                    sender_avatar: isavatar,
+                    language: i18n._locale,
+                    //originname: item.animal_id.name,
+                    postanimalid: item,
+                }),
+            });
+            const res = await response.json();
+            if (res.success) {
+                console.log("Notification envoyée avec succès !");
+            } else {
+                console.log("Erreur lors de l'envoi de la notification :", res);
+            }
+        } catch (error) {
+            console.error("Erreur fetch notification:", error);
         }
-    } catch (error) {
-        console.error("Erreur fetch notification:", error);
-    }
     };
 
     const forceSwipe = (direction) => {
@@ -152,21 +152,15 @@ const LoveSwap = ({ setIdMatch, idMatch, setActive, active, setMatchVisible, mat
                         if (res.ismatch === 1) {
                             console.log("LOVE SWAP RETOUR IS MATCH");
                             setIdMatch(cards[cardIndexRef.current]._id);
-
-                            
                             setActive(true);
                             setMatchVisible(true);
-                            
-                           
                             setTimeout(() => {
-                            
                                 setMatchVisible(false);
-                                 setActive(false);
+                                setActive(false);
                             }, 6000);
 
                             // Send Notification
-                           sendPushMatchNotification(cards[cardIndexRef.current]._id)
-
+                            sendPushMatchNotification(cards[cardIndexRef.current]._id)
                         }
                     }
                     else {
@@ -305,10 +299,6 @@ const LoveSwap = ({ setIdMatch, idMatch, setActive, active, setMatchVisible, mat
                                 }
                             </TouchableOpacity>
                         </View>
-
-
-
-
                     </Animated.View>
                 );
             })

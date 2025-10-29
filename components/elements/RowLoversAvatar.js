@@ -6,6 +6,8 @@ import Colors from '../../constants/Colors';
 import { FormatDateToNow } from '../../utils/helpers';
 
 const config = require('../../config');
+var noImg = require('../../assets/images/logo_avatar.png');
+
 const ScreenWidth = Math.round(Dimensions.get('window').width);
 const ScreenHeight = Math.round(Dimensions.get('window').height);
 
@@ -33,7 +35,7 @@ const RowLoversAvatar = ({ navigation, likersList, userId, animalId, }) => {
         }
         {(item.avatars.length === 0) &&
           <Image
-            source={this.state.noImg}
+            source={noImg}
             size='small'
             style={[styles.avatar, { borderWidth: 0 }]}
           />
